@@ -1,0 +1,13 @@
+bazel_dep(name = "rules_oci", version = "2.0.0-rc0")
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+
+oci.pull(
+    name = "distroless_base",
+    digest = "sha256:1aae189e3baecbb4044c648d356ddb75025b2ba8d14cdc9c2a19ba784c90bfb9",
+    image = "gcr.io/distroless/base-debian12",
+#    tag="latest",
+    platforms = [
+        "linux/amd64",
+    ],
+)
+use_repo(oci, "distroless_base")

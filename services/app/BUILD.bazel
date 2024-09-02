@@ -1,4 +1,27 @@
 load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_push")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+
+oci_push(
+    name = "push_image",
+    image = ":image",
+    remote_tags = ["latest"],
+    repository = "registry.vms.polymath-solutions.com:443/uno/image",
+)
+
+pkg_tar(
+    name = "app_layer",
+    srcs = [":app"],
+    # If the binary depends on RUNFILES, uncomment the attribute below.
+    # include_runfiles = True
+)
+
+oci_image(
+    name = "image",
+    base = "@distroless_base",
+    entrypoint = ["/app"],
+    tars = [":app_layer"],
+)
 
 go_library(
     name = "app_lib",

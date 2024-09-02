@@ -2,3 +2,6 @@
 # Go
 include("//build/modules:go.MODULE.bazel")
 ##
+
+include("//build/modules:oci.MODULE.bazel")
+include("//build/modules:packages.MODULE.bazel")
