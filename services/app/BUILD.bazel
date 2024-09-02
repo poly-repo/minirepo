@@ -6,8 +6,10 @@ go_library(
     importpath = "go/test/services/app",
     visibility = ["//visibility:private"],
     deps = [
+        "//proto:portal_proto_go_proto",
         "//services/lib/helloworld",
         "@com_github_gofiber_fiber_v2//:fiber",
+        "@org_golang_google_protobuf//encoding/protojson",
     ],
 )
 

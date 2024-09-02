@@ -1,8 +1,11 @@
 module go/test
 
-go 1.22.5
+go 1.20
 
-require github.com/gofiber/fiber/v2 v2.52.5
+require (
+	github.com/gofiber/fiber/v2 v2.52.5
+	google.golang.org/protobuf v1.34.2
+)
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect

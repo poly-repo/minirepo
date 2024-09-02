@@ -1,0 +1,7 @@
+syntax = "proto3";
+package portal_proto;
+
+message EvalRequest {
+  string name = 1;
+}
+
