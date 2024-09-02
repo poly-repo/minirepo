@@ -28,11 +28,11 @@ func main() {
 			TimeFormat: time.Kitchen,
 		}),
 	))
-	logger.Error("Something weird")
+	logger.Info("Something weird")
 
 	app := fiber.New()
 
-	msg := portal_pb.EvalRequest{Name: "Foo"}
+	msg := portal_pb.EvalRequest{Name: "Bar"}
 	fmt.Println(protojson.Format(&msg))
 	newUUID := uuid.New()
 	fmt.Printf("UUID: %v\n", newUUID)

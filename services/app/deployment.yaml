@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: app
+   namespace: default
+spec:
+   replicas: 1
+   selector:
+      matchLabels:
+         bb: web
+   template:
+      metadata:
+         labels:
+            bb: web
+      spec:
+         containers:
+            - name: bb-site
+#              image: registry.vms.polymath-solutions.com:443/uno/image@sha256:a58e56e5a3466a07075484c43b1540e1c0ad75509b8ce911936b7750078d74c7
+              image: registry.vms.polymath-solutions.com:443/uno/image:latest
+              imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: bb-entrypoint
+   namespace: default
+spec:
+   selector:
+      bb: web
+   ports:
+      - port: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bb-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: demo.polymath-solutions.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bb-entrypoint
+            port:
+              number: 3000
