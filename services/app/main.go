@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"log/slog"
+	"os"
 	"time"
 
 	portal_pb "go/test/proto"
@@ -17,6 +18,7 @@ import (
 )
 
 func main() {
+	w := os.Stderr
 	logger := slog.New(tint.NewHandler(w, nil))
 
 	// set global logger with custom options
