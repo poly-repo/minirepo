@@ -3,6 +3,6 @@ load("@rules_go//go:def.bzl", "go_library")
 go_library(
     name = "helloworld",
     srcs = ["helloworld.go"],
-    importpath = "go/test/services/lib/helloworld",
+    importpath = "uno/services/lib/helloworld",
     visibility = ["//visibility:public"],
 )

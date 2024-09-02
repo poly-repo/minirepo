@@ -3,12 +3,13 @@ load("@rules_go//go:def.bzl", "go_binary", "go_library")
 go_library(
     name = "app_lib",
     srcs = ["main.go"],
-    importpath = "go/test/services/app",
+    importpath = "uno/services/app",
     visibility = ["//visibility:private"],
     deps = [
         "//proto:portal_proto_go_proto",
         "//services/lib/helloworld",
         "@com_github_gofiber_fiber_v2//:fiber",
+        "@com_github_google_uuid//:uuid",
         "@org_golang_google_protobuf//encoding/protojson",
     ],
 )

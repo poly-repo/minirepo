@@ -1,0 +1,4 @@
+#!/bin/bash
+# Ehi Emacs, this is -*- shell-script -*-
+
+bazel run @rules_go//go -- "$@"
