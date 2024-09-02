@@ -10,6 +10,7 @@ go_library(
         "//services/lib/helloworld",
         "@com_github_gofiber_fiber_v2//:fiber",
         "@com_github_google_uuid//:uuid",
+        "@com_github_lmittmann_tint//:tint",
         "@org_golang_google_protobuf//encoding/protojson",
     ],
 )
