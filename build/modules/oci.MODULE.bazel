@@ -1,13 +1,47 @@
 bazel_dep(name = "rules_oci", version = "2.0.0-rc0")
-oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 oci.pull(
     name = "distroless_base",
     digest = "sha256:1aae189e3baecbb4044c648d356ddb75025b2ba8d14cdc9c2a19ba784c90bfb9",
     image = "gcr.io/distroless/base-debian12",
-#    tag="latest",
+    #    tag="latest",
     platforms = [
         "linux/amd64",
     ],
 )
-use_repo(oci, "distroless_base")
+use_repo(oci, "distroless_base", "distroless_base_linux_amd64")
+
+oci.pull(
+    name = "distroless_python3",
+    image = "gcr.io/distroless/python3-debian11:nonroot",
+    tag="latest",
+    platforms = [
+        "linux/amd64",
+    ],
+)
+use_repo(oci, "distroless_python3", "distroless_python3_linux_amd64")
+#use_repo(distroless_python3 = "@distroless_python3")
+
+bazel_dep(name = "container_structure_test", version = "1.19.1")
+
+oci.pull(
+    name = "ubuntu",
+    image = "ubuntu",
+    tag = "latest",
+    platforms = [
+        "linux/amd64",
+    ],
+)
+use_repo(oci, "ubuntu")
+
+oci.pull(
+    name = "python",
+    image = "python",
+    tag = "3.12",
+    platforms = [
+        "linux/amd64",
+    ],
+)
+use_repo(oci, "python")
+

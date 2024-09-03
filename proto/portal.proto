@@ -1,7 +1,15 @@
 syntax = "proto3";
 package portal_proto;
 
+service Evaluator {
+  rpc Eval (EvalRequest) returns (EvalResponse) {}
+}
+
 message EvalRequest {
-  string name = 1;
+  string expr = 1;
+}
+
+message EvalResponse {
+  string result = 1;
 }
 

@@ -1,4 +1,4 @@
-load("@rules_go//proto:def.bzl", "go_proto_library")
+load("@rules_go//proto:def.bzl", "go_grpc_library", "go_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
@@ -7,9 +7,19 @@ proto_library(
     visibility = ["//visibility:public"],
 )
 
+# go_proto_library(
+#     name = "portal_proto_go_proto",
+#     importpath = "uno/proto",
+#     proto = ":portal_proto_proto",
+#     visibility = ["//visibility:public"],
+# )
+
 go_proto_library(
-    name = "portal_proto_go_proto",
-    importpath = "go/test/proto",
+    name = "portal_go_proto",
+    compilers = ["@rules_go//proto:go_grpc"],
+    importpath = "uno/proto",
     proto = ":portal_proto_proto",
-    visibility = ["//visibility:public"],
+    visibility = [
+        "//visibility:public",
+    ],
 )

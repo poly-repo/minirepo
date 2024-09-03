@@ -1,0 +1,52 @@
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_push")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@pypi//:requirements.bzl", "requirement")
+load("//build/bzl:python.bzl", "py_oci_image")
+load("@container_structure_test//:defs.bzl", "container_structure_test")
+
+py_binary(
+    name = "service",
+    srcs = ["service.py"],
+    deps = [
+        requirement("cowsay"),
+    ],
+)
+
+pkg_tar(
+    name = "service_layer",
+    srcs = [":service"],
+    # If the binary depends on RUNFILES, uncomment the attribute below.
+    # include_runfiles = True
+)
+
+oci_image(
+    name = "service_image",
+    base = "@distroless_python3",
+    entrypoint = ["services/python/service"],
+    tars = [":service_layer"],
+    visibility = ["//visibility:public"],
+)
+
+oci_push(
+    name = "push_image",
+    image = ":image",
+    remote_tags = ["latest"],
+    repository = "registry.vms.polymath-solutions.com:443/uno/python_service",
+)
+
+py_oci_image(
+    name = "image",
+    base = "@python",
+#    base = "@ubuntu",
+#    base = "@distroless_python3_linux_amd64",
+    binary = "service",
+    entrypoint = ["/services/python/service"],
+)
+
+container_structure_test(
+    name = "test",
+    configs = ["test.yaml"],
+    image = ":image",
+    tags = ["requires-docker"],
+)

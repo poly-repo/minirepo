@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-   name: app
+   name: python
    namespace: default
 spec:
    replicas: 1
@@ -16,7 +16,7 @@ spec:
          containers:
             - name: bb-site
 #              image: registry.vms.polymath-solutions.com:443/uno/image@sha256:a58e56e5a3466a07075484c43b1540e1c0ad75509b8ce911936b7750078d74c7
-              image: registry.vms.polymath-solutions.com:443/uno/image:latest
+              image: registry.vms.polymath-solutions.com:443/uno/python_service:latest
               imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
