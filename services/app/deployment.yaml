@@ -17,7 +17,7 @@ spec:
             - name: bb-site
 #              image: registry.vms.polymath-solutions.com:443/uno/image@sha256:a58e56e5a3466a07075484c43b1540e1c0ad75509b8ce911936b7750078d74c7
               image: registry.vms.polymath-solutions.com:443/uno/image:latest
-              imagePullPolicy: IfNotPresent
+              imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
@@ -36,17 +36,22 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: bb-ingress
+  name: bb-ingress-grpc
   namespace: default
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: polymath-solutions-com-ca
+    cert-manager.io/duration: 2160h # 90d
+    cert-manager.io/renew-before: 360h # 15d
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
 spec:
   ingressClassName: nginx
   rules:
-  - host: demo.polymath-solutions.com
+  - host: demo.grpc.polymath-solutions.com
     http:
       paths:
-      - path: /api
+      - path: /
         pathType: Prefix
         backend:
           service:
@@ -54,6 +59,30 @@ spec:
             name: bb-entrypoint
             port:
               number: 50053      
+  tls:
+  # This secret must exist beforehand
+  # The cert must also contain the subj-name grpctest.dev.mydomain.com
+  # https://github.com/kubernetes/ingress-nginx/blob/master/docs/examples/PREREQUISITES.md#tls-certificates
+  - secretName: demo.grpc.polymath-solutions.com
+    hosts:
+      - demo.grpc.polymath-solutions.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bb-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: polymath-solutions-com-ca
+    cert-manager.io/duration: 2160h # 90d
+    cert-manager.io/renew-before: 360h # 15d
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: demo.polymath-solutions.com
+    http:
+      paths:
       - path: /
         pathType: Prefix
         backend:

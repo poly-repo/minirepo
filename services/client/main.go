@@ -2,19 +2,26 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"log"
 
 	portal_pb "uno/proto"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/credentials"
 )
 
 func main() {
-	target := "demo.polymath-solutions.com:50053"
+	target := "demo.grpc.polymath-solutions.com:443"
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{
+			InsecureSkipVerify: true, // This is equivalent to the -insecure flag in grpcurl
+		})),
+	}
 	//	target := "localhost:50053"
-	conn, err := grpc.Dial(target, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	//	conn, err := grpc.Dial(target, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(target, opts...)
 
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)

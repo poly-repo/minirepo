@@ -1,9 +1,9 @@
+load("@container_structure_test//:defs.bzl", "container_structure_test")
+load("@pypi//:requirements.bzl", "requirement")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_image_index", "oci_push")
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
 load("@rules_python//python:defs.bzl", "py_binary")
-load("@pypi//:requirements.bzl", "requirement")
 load("//build/bzl:python.bzl", "py_oci_image")
-load("@container_structure_test//:defs.bzl", "container_structure_test")
 
 py_binary(
     name = "service",
@@ -38,8 +38,8 @@ oci_push(
 py_oci_image(
     name = "image",
     base = "@python",
-#    base = "@ubuntu",
-#    base = "@distroless_python3_linux_amd64",
+    #    base = "@ubuntu",
+    #    base = "@distroless_python3_linux_amd64",
     binary = "service",
     entrypoint = ["/services/python/service"],
 )
